@@ -1,0 +1,95 @@
+<div class="edit-blog-container">
+
+    <div class="edit-blog-wrapper">
+
+        <!-- Edit Blog Card -->
+        <div class="edit-blog-card">
+            <div class="header">
+                <h2 class="fw-bold mb-2">
+                    <i class="fa-solid fa-pen-to-square me-2 text-primary"></i>
+                    Edit Blog
+                </h2>
+                <p class="text-muted mb-4">
+                    Update your content and keep it fresh
+                </p>
+            </div>
+
+            <!-- Blog Form -->
+            <form class="blog-form" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+
+                <!-- Blog Title -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Blog Title</label>
+                    <input formControlName="title" type="text" class="form-control" [value]="blog()?.title" />
+                </div>
+
+                <!-- Category -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Category</label>
+                    <select class="form-select" formControlName="categoryId">
+                        @for(c of categoryStore.categoryList(); track c.id)
+                        {
+                           <option value="{{c.id}}">{{c.name}}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Blog Content -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Content</label>
+                    <textarea formControlName="description" class="form-control" rows="7" [value]="blog()?.description"></textarea>
+                </div>
+
+                <!-- Visibility -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Visibility</label>
+                    <select class="form-select" formControlName="visibility">
+                        <option value="" selected disabled>--select--</option>
+                        <option value="Public">public</option>
+                        <option value="Private">private</option>
+                    </select>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-end gap-3">
+                    <a class="btn btn-light px-4 py-2 fw-semibold shadow-sm" routerLink="/my-blogs/{{blog()?.authorId}}">
+                        Cancel
+                    </a>
+
+                    <button class="btn btn-primary px-4 py-2 fw-semibold shadow-sm">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        Save Changes
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Right Decoration -->
+        <div class="decoration">
+            <div class="decoration-content">
+                <h3 class="fw-bold">Refine Your Story</h3>
+                <p>Great writing evolves. Polish your thoughts and publish again.</p>
+
+                <div class="features mt-4">
+                    <div class="feature">
+                        <i class="fa-solid fa-wand-magic-sparkles feature-icon"></i>
+                        <span>Clean Editor</span>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fa-solid fa-eye feature-icon"></i>
+                        <span>Visibility Control</span>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fa-solid fa-clock-rotate-left feature-icon"></i>
+                        <span>Instant Updates</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

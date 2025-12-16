@@ -1,0 +1,145 @@
+<div class="login-container">
+  <div class="login-wrapper">
+    <div class="login-card">
+      <!-- Header -->
+      <div class="login-header">
+        <div class="login-logo">
+          <i class="fa-solid fa-envelope logo-icon"></i>
+        </div>
+        <h2 class="fw-bold">Welcome Back</h2>
+        <p class="text-muted">Sign in to your account</p>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> {{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+      </div>
+
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Email Field -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fa-solid fa-envelope text-primary"></i>
+            </span>
+            <input
+              type="email"
+              class="form-control border-start-0"
+              id="email"
+              formControlName="email"
+              placeholder="Enter your email"
+              [ngClass]="{ 'is-invalid': email?.invalid && email?.touched }"
+            />
+            <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+              <span *ngIf="email?.errors?.['required']">Email is required</span>
+              <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fa-solid fa-lock text-primary"></i>
+            </span>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-control border-start-0 border-end-0"
+              id="password"
+              formControlName="password"
+              placeholder="Enter your password"
+              [ngClass]="{ 'is-invalid': password?.invalid && password?.touched }"
+            />
+            <button
+              type="button"
+              class="btn btn-outline-secondary border-start-0"
+              (click)="togglePasswordVisibility()"
+              tabindex="-1"
+            >
+              <i [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" class="fa-solid"></i>
+            </button>
+            <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+              <span *ngIf="password?.errors?.['required']">Password is required</span>
+              <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="rememberMe" />
+            <label class="form-check-label" for="rememberMe">
+              Remember me
+            </label>
+          </div>
+          <a href="#" class="text-decoration-none text-primary small fw-semibold">Forgot password?</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn btn-primary w-100 py-2 fw-semibold mb-3"
+          [disabled]="isLoading"
+        >
+          <span *ngIf="!isLoading">Sign In</span>
+          <span *ngIf="isLoading">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Signing in...
+          </span>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="position-relative mb-3">
+        <hr />
+        <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 text-muted small">OR</span>
+      </div>
+
+      <!-- Social Login -->
+      <div class="d-grid gap-2 mb-3">
+        <button type="button" class="btn btn-outline-secondary py-2">
+          <i class="fab fa-google me-2"></i>Sign in with Google
+        </button>
+        <button type="button" class="btn btn-outline-secondary py-2">
+          <i class="fab fa-github me-2"></i>Sign in with GitHub
+        </button>
+      </div>
+
+      <!-- Sign Up Link -->
+      <div class="text-center">
+        <p class="mb-0">
+          Don't have an account?
+          <a routerLink="/register" class="text-decoration-none text-primary fw-semibold">Sign up here</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Right Side Decoration -->
+    <div class="login-decoration">
+      <div class="decoration-content">
+        <h3 class="fw-bold">Start Your Blogging Journey</h3>
+        <p>Share your thoughts, ideas, and stories with the world.</p>
+        <div class="decoration-features mt-4">
+          <div class="feature">
+            <i class="fa-solid fa-envelope feature-icon"></i>
+            <span>Easy to Use</span>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-lock feature-icon"></i>
+            <span>Secure & Private</span>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-share-nodes feature-icon"></i>
+            <span>Share Anywhere</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

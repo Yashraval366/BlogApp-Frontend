@@ -1,0 +1,92 @@
+<div class="create-blog-container">
+
+    <div class="create-blog-wrapper">
+
+        <!-- Blog Form Card -->
+        <div class="create-blog-card">
+            <div class="header">
+                <h2 class="fw-bold mb-2">
+                    <i class="fa-solid fa-plus me-2 text-primary"></i>
+                    Create New Blog
+                </h2>
+                <p class="text-muted mb-4">Share your ideas with the world</p>
+            </div>
+
+            <!-- Blog Form -->
+            <form class="blog-form" [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+
+                <!-- Blog Title -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Blog Title</label>
+                    <input type="text" class="form-control" placeholder="Enter your blog title"
+                        formControlName="title" />
+                </div>
+                
+                <!-- Category -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Category</label>
+                    <select class="form-select" formControlName="categoryId">
+                        <option [value]="" disabled selected>Select Category</option>
+                        <option *ngFor="let c of store.categoryList()" [value]="c.id">{{ c.name }}</option>
+                    </select>
+                </div>
+
+                <!-- Blog Content -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Content</label>
+                    <textarea class="form-control" rows="7" placeholder="Write your blog content here..."
+                        formControlName="description"></textarea>
+                </div>
+
+                <!-- visibility -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Visibility </label>
+                    <select class="form-select" formControlName="visibility">
+                        <option value="" selected disabled>--select--</option>
+                        <option value="Public">public</option>
+                        <option value="Private">private</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end gap-3">
+                    <button class="btn btn-light px-4 py-2 fw-semibold shadow-sm" type="button" routerLink="/blog">
+                        Cancel
+                    </button>
+
+                    <button class="btn btn-primary px-4 py-2 fw-semibold shadow-sm" type="submit">
+                        <i class="fa-solid fa-plus me-2"></i> Publish Blog
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Right Decoration -->
+        <div class="decoration">
+            <div class="decoration-content">
+                <h3 class="fw-bold">Write Something Amazing</h3>
+                <p>Inspire people with your words, thoughts, and creativity.</p>
+
+                <div class="features mt-4">
+                    <div class="feature">
+                        <i class="fa-solid fa-pen feature-icon"></i>
+                        <span>Beautiful Editor</span>
+                    </div>
+                    <div class="feature">
+                    <div class="feature">
+                        <i class="fa-solid fa-lock feature-icon"></i>
+                        <span>Secure Dashboard</span>
+                    </div>
+                    <div class="feature">
+                    <div class="feature">
+                        <i class="fa-solid fa-share-nodes feature-icon"></i>
+                        <span>Instant Publishing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

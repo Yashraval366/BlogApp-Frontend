@@ -1,0 +1,58 @@
+<!-- HERO BANNER -->
+<section class="blog-details-hero">
+    <div class="hero-overlay"></div>
+
+    @if(blog())
+    {
+    <div class="hero-content text-center">
+        <h1 class="fw-bold blog-title">{{ blog()?.title }}</h1>
+
+        <div class="meta d-flex justify-content-center gap-3 mt-3">
+
+            <span class="meta-item">
+                <i class="fa-solid fa-user me-1"></i>
+                {{ blog()?.authorName }}
+            </span>
+
+            <span class="meta-item">
+                <i class="fa-solid fa-calendar me-1"></i>
+                {{ blog()?.createdAt | date:'mediumDate' }}
+            </span>
+            @if(blog()?.lastUpdatedAt)
+            {
+                <span class="meta-item">
+                    <i class="fa-solid fa-calendar me-1"></i>
+                    {{ blog()?.lastUpdatedAt | date:'mediumDate' }}
+                </span>
+            }
+            <span class="meta-item">
+                <i class="fa-solid fa-tag me-1"></i>
+                {{ blog()?.categoryName }}
+            </span>
+
+        </div>
+    </div>
+    }
+</section>
+
+<!-- BLOG CONTENT -->
+<div class="container blog-details-container">
+
+    @if (blog())
+    {
+    <div class="blog-content-card shadow-lg">
+
+        <!-- Body -->
+        <div class="blog-body mt-4">
+
+            <p class="blog-text">
+                {{ blog()?.description }}
+            </p>
+
+            <hr />
+
+        </div>
+    </div>
+    }
+
+</div>

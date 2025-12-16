@@ -1,0 +1,260 @@
+<!-- filepath: d:\ConvergeSol Training\Angular20\BlogApp\src\app\components\register\register.component.html -->
+<div class="register-container">
+  <div class="register-wrapper">
+    <!-- Left Side Decoration -->
+    <div class="register-decoration">
+      <div class="decoration-content">
+        <h3 class="fw-bold">Join Our Community</h3>
+        <p>Share your stories, connect with readers, and grow your audience.</p>
+        <div class="decoration-features mt-5">
+          <div class="feature">
+            <i class="fa-solid fa-check feature-icon text-success"></i>
+            <span>Free to Join</span>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-check feature-icon text-success"></i>
+            <span>Easy Publishing</span>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-check feature-icon text-success"></i>
+            <span>Build Your Audience</span>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-check feature-icon text-success"></i>
+            <span>Monetize Your Content</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="register-card">
+      <!-- Header -->
+      <div class="register-header">
+        <div class="register-logo">
+          <i class="fa-solid fa-user logo-icon"></i>
+        </div>
+        <h2 class="fw-bold">Create Account</h2>
+        <p class="text-muted">Join our blogging community today</p>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> {{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> {{ successMessage }}
+      </div>
+
+      <!-- Register Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+        <!-- Name Row -->
+        <div class="row">
+          <!-- First Name -->
+          <div class="col-md-6 mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0">
+                <i class="fa-solid fa-user text-primary"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control border-start-0"
+                id="firstName"
+                formControlName="firstName"
+                placeholder="Enter first name"
+                [ngClass]="{ 'is-invalid': firstName?.invalid && firstName?.touched }"
+              />
+              <div class="invalid-feedback" *ngIf="firstName?.invalid && firstName?.touched">
+                <span *ngIf="firstName?.errors?.['required']">First name is required</span>
+                <span *ngIf="firstName?.errors?.['minlength']">At least 2 characters required</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="col-md-6 mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0">
+                <i class="fa-solid fa-user text-primary"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control border-start-0"
+                id="lastName"
+                formControlName="lastName"
+                placeholder="Enter last name"
+                [ngClass]="{ 'is-invalid': lastName?.invalid && lastName?.touched }"
+              />
+              <div class="invalid-feedback" *ngIf="lastName?.invalid && lastName?.touched">
+                <span *ngIf="lastName?.errors?.['required']">Last name is required</span>
+                <span *ngIf="lastName?.errors?.['minlength']">At least 2 characters required</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fa-solid fa-envelope text-primary"></i>
+            </span>
+            <input
+              type="email"
+              class="form-control border-start-0"
+              id="email"
+              formControlName="email"
+              placeholder="Enter your email"
+              [ngClass]="{ 'is-invalid': email?.invalid && email?.touched }"
+            />
+            <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+              <span *ngIf="email?.errors?.['required']">Email is required</span>
+              <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fa-solid fa-lock text-primary"></i>
+            </span>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-control border-start-0 border-end-0"
+              id="password"
+              formControlName="password"
+              placeholder="Enter password"
+              (input)="updatePasswordStrength()"
+              [ngClass]="{ 'is-invalid': password?.invalid && password?.touched }"
+            />
+            <button
+              type="button"
+              class="btn btn-outline-secondary border-start-0"
+              (click)="togglePasswordVisibility()"
+              tabindex="-1"
+            >
+              <i class="fa-solid" [ngClass]="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"></i>
+            </button>
+            <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+              <span *ngIf="password?.errors?.['required']">Password is required</span>
+              <span *ngIf="password?.errors?.['minlength']">Password must be at least 8 characters</span>
+            </div>
+          </div>
+
+          <!-- Password Strength Indicator -->
+          <div *ngIf="password?.value" class="password-strength mt-2">
+            <div class="strength-bar">
+              <div
+                class="strength-progress"
+                [style.width.%]="getPasswordStrengthPercentage()"
+                [style.backgroundColor]="getPasswordStrengthColor()"
+              ></div>
+            </div>
+            <small class="strength-label" [style.color]="getPasswordStrengthColor()">
+              Strength: {{ getPasswordStrengthLabel() }}
+            </small>
+
+            <!-- Password Requirements -->
+            <div class="requirements mt-2">
+              <div class="requirement" [class.met]="passwordStrength.minLength">
+                <i class="fa-solid requirement-icon" [ngClass]="{'fa-check': passwordStrength.minLength, 'fa-times': !passwordStrength.minLength}"></i>
+                <span>At least 8 characters</span>
+              </div>
+              <div class="requirement" [class.met]="passwordStrength.hasUpperCase">
+                <i class="fa-solid requirement-icon" [ngClass]="{'fa-check': passwordStrength.hasUpperCase, 'fa-times': !passwordStrength.hasUpperCase}"></i>
+                <span>One uppercase letter</span>
+              </div>
+              <div class="requirement" [class.met]="passwordStrength.hasLowerCase">
+                <i class="fa-solid requirement-icon" [ngClass]="{'fa-check': passwordStrength.hasLowerCase, 'fa-times': !passwordStrength.hasLowerCase}"></i>
+                <span>One lowercase letter</span>
+              </div>
+              <div class="requirement" [class.met]="passwordStrength.hasNumber">
+                <i class="fa-solid requirement-icon" [ngClass]="{'fa-check': passwordStrength.hasNumber, 'fa-times': !passwordStrength.hasNumber}"></i>
+                <span>One number</span>
+              </div>
+              <div class="requirement" [class.met]="passwordStrength.hasSpecialChar">
+                <i class="fa-solid requirement-icon" [ngClass]="{'fa-check': passwordStrength.hasSpecialChar, 'fa-times': !passwordStrength.hasSpecialChar}"></i>
+                <span>One special character (!#$%^&*&#64;)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fa-solid fa-lock text-primary"></i>
+            </span>
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              class="form-control border-start-0 border-end-0"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              placeholder="Confirm password"
+              [ngClass]="{ 'is-invalid': confirmPassword?.invalid && confirmPassword?.touched }"
+            />
+            <button
+              type="button"
+              class="btn btn-outline-secondary border-start-0"
+              (click)="toggleConfirmPasswordVisibility()"
+              tabindex="-1"
+            >
+              <i class="fa-solid" [ngClass]="{'fa-eye': !showConfirmPassword, 'fa-eye-slash': showConfirmPassword}"></i>
+            </button>
+            <div class="invalid-feedback" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
+              <span *ngIf="confirmPassword?.errors?.['required']">Please confirm your password</span>
+              <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">Passwords do not match</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div class="mb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="agreeTerms" formControlName="agreeTerms" />
+            <label class="form-check-label" for="agreeTerms">
+              I agree to the
+              <a href="#" class="text-decoration-none text-primary fw-semibold">Terms of Service</a>
+              and
+              <a href="#" class="text-decoration-none text-primary fw-semibold">Privacy Policy</a>
+            </label>
+            <div class="invalid-feedback" *ngIf="agreeTerms?.invalid && agreeTerms?.touched">
+              You must agree to the terms and conditions
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn btn-primary w-100 py-2 fw-semibold mb-3"
+          [disabled]="isLoading"
+        >
+          <span *ngIf="!isLoading">Create Account</span>
+          <span *ngIf="isLoading">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Creating Account...
+          </span>
+        </button>
+      </form>
+
+      <!-- Sign In Link -->
+      <div class="text-center">
+        <p class="mb-0">
+          Already have an account?
+          <a routerLink="/login" class="text-decoration-none text-primary fw-semibold">Sign in here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,156 @@
+<!-- HERO SECTION -->
+<section class="blog-hero">
+  <div class="hero-content text-center">
+    <h1 class="fw-bold">Explore Inspiring Blogs</h1>
+    <p class="lead">Discover thoughts, stories, and ideas from creators worldwide.</p>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="container mt-5">
+  <div class="filter-bar shadow-sm">
+
+    <!-- Search -->
+    <div class="search-wrapper">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search blogs..." />
+    </div>
+
+    <!-- Category Filter -->
+    <select class="category-select">
+      <option value="" disabled selected>All Categories</option>
+      @for(c of store.categoryList(); track c.id)
+      {
+        <option [value]="c.id">{{c.name}}</option>
+      }
+    </select>
+
+  </div>
+</div>
+
+<!-- SKELETON LOADER FOR ALL BLOGS -->
+<div class="masonry" *ngIf="blogResponse()?.status == 'loading'">
+
+  <div class="masonry-item" *ngFor="let s of [1,1,1,1,1,1]">
+    <div class="skeleton-card">
+
+      <!-- Category Tag -->
+      <div class="skeleton skeleton-tag"></div>
+
+      <!-- Title -->
+      <div class="skeleton skeleton-title"></div>
+
+      <!-- Description Lines -->
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line short"></div>
+
+      <!-- Meta -->
+      <div class="skeleton skeleton-meta"></div>
+
+      <!-- Button -->
+      <div class="skeleton skeleton-btn"></div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- BLOG GRID -->
+<div class="container mt-4" *ngIf="blogResponse()?.status == 'success'">
+  <div class="masonry">
+    @for(b of blogs(); track b.id)
+    {
+      <div class="masonry-item">
+      
+        <div class="blog-card-modern">
+      
+          <span class="category-tag">
+            <i class="fa-solid fa-tag me-1"></i>{{ b.categoryName }}
+          </span>
+      
+          <h4 class="blog-title-modern">{{ b.title }}</h4>
+      
+          <p class="blog-desc-modern">
+            {{ b.description }}
+          </p>
+      
+          <div class="blog-meta">
+            <span><i class="fa-solid fa-user me-1"></i>{{ b.authorName }}</span>
+            <span><i class="fa-solid fa-calendar me-1"></i>{{ b.createdAt | date:'mediumDate' }}</span>
+          </div>
+
+          <!-- ACTION BAR -->
+          <div class="blog-actions">
+          
+            <button class="action-btn like-btn" aria-label="Like">
+              <i class="fa-regular fa-thumbs-up"></i>
+              <span>24</span>
+            </button>
+          
+            <button class="action-btn dislike-btn" aria-label="Dislike">
+              <i class="fa-regular fa-thumbs-down"></i>
+              <span>3</span>
+            </button>
+          
+            <button class="action-btn comment-btn ms-auto" aria-label="Comments">
+              <i class="fa-regular fa-comment-dots"></i>
+              <span>12</span>
+            </button>
+          
+          </div>
+      
+          <a class="read-more-btn" routerLink="/blog-details/{{ b.id }}">
+            Read More <i class="fa-solid fa-arrow-right ms-1"></i>
+          </a>
+      
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- PAGINATION -->
+<!-- PAGINATION (wired to component functions) -->
+<nav class="pager container ml-5" aria-label="Blog pagination" *ngIf="totalPages() > 1">
+  <ul class="pager-list">
+
+    <!-- Prev -->
+    <li class="pager-item">
+      <button class="pager-link pager-prev" [attr.aria-disabled]="pageNumber() === 1"
+        [class.disabled]="pageNumber() === 1" (click)="prev()" title="Previous page" [disabled]="pageNumber() === 1">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+    </li>
+
+    <!-- If there are many pages, show first and left ellipsis when appropriate -->
+    <li class="pager-item" *ngIf="pages().length > 6">
+      <button class="pager-link" (click)="loadPage(1)">1</button>
+    </li>
+
+    <li class="pager-item pager-ellipsis" *ngIf="pages().length > 8 && pageNumber() > 4">…</li>
+
+    <!-- Page numbers around current page -->
+    <li class="pager-item" *ngFor="let p of paginationWindow(); trackBy: trackByNumber">
+      <button class="pager-link" [class.pager-active]="pageNumber() === p" (click)="loadPage(p)"
+        [attr.aria-current]="pageNumber() === p ? 'page' : null">
+        {{ p }}
+      </button>
+    </li>
+
+    <li class="pager-item pager-ellipsis" *ngIf="pages().length > 8 && pageNumber() < totalPages() - 3">…</li>
+
+    <li class="pager-item" *ngIf="pages().length > 6">
+      <button class="pager-link" (click)="loadPage(totalPages())">{{ totalPages() }}</button>
+    </li>
+
+    <!-- Next -->
+    <li class="pager-item">
+      <button class="pager-link pager-next" [attr.aria-disabled]="pageNumber() === totalPages()"
+        [class.disabled]="pageNumber() === totalPages()" (click)="next()" title="Next page"
+        [disabled]="pageNumber() === totalPages()">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </li>
+  </ul>
+</nav>

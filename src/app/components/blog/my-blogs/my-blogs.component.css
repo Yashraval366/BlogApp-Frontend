@@ -1,0 +1,357 @@
+/* HERO */
+.myblogs-hero {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  padding: 3rem 1rem;
+  color: white;
+  text-align: center;
+}
+.hero-inner h1 {
+  animation: fadeDown 0.5s ease;
+}
+.hero-inner p {
+  animation: fadeUp 0.5s ease;
+} /* USER STATS */
+.stats-bar {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.stat-icon {
+  font-size: 1.6rem;
+  color: #6a5acd;
+}
+.stat-value {
+  font-size: 0.85rem;
+  color: #6b7280;
+} 
+/* MASONRY GRID */
+.masonry {
+  column-count: 3;
+  column-gap: 0.7rem;
+}
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.1rem;
+}
+@media (max-width: 992px) {
+  .masonry {
+    column-count: 2;
+  }
+}
+@media (max-width: 576px) {
+  .masonry {
+    column-count: 1;
+  }
+} 
+
+/* ---------- MY BLOG CARD ---------- */
+.myblog-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: 0.3s ease;
+}
+
+.myblog-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* CATEGORY TAG */
+.my-category-tag {
+  position: absolute;
+  top: 16px;
+  left: 14px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+/* TITLE */
+.myblog-title {
+  margin-top: 1.9rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+/* DESCRIPTION */
+.myblog-desc {
+  font-size: 0.95rem;
+  color: #4a5568;
+}
+
+/* META */
+.myblog-meta {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-top: 0.4rem;
+}
+
+/* ---------- ACTION BAR ---------- */
+.myblog-actions {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Engagement (likes/comments) */
+.engagement {
+  display: flex;
+  gap: 1rem;
+}
+
+.eng-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: default;
+  transition: color 0.25s ease;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: none;
+}
+
+.eng-item i {
+  font-size: 0.9rem;
+}
+
+.eng-item:hover{
+  background: rgba(102, 126, 234, 0.08);
+  color: #4c51bf;
+}
+
+/* Hover polish */
+.eng-item.like:hover {
+  transform: scale(1.1) rotate(-3deg);
+  color: #38a169;
+}
+
+.eng-item.comment:hover {
+  transform: scale(1.1) rotate(-3deg);
+  color: #6b46c1;
+}
+
+/* ---------- MANAGE BUTTONS ---------- */
+.manage-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.manage-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.25s ease;
+}
+
+/* Edit */
+.edit-btn {
+  color: #4c51bf;
+  background: rgba(102,126,234,0.08);
+}
+
+.edit-btn:hover {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Delete */
+.delete-btn {
+  color: #e53e3e;
+  background: rgba(229,62,62,0.08);
+}
+
+.delete-btn:hover {
+  background: linear-gradient(135deg, #e53e3e, #c53030);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Click feedback */
+.manage-btn:active {
+  transform: scale(0.92);
+}
+
+/* Simple Animations */
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} /* Skeleton Shapes */
+.skeleton-tag {
+  width: 100px;
+  height: 20px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+.skeleton-title {
+  width: 70%;
+  height: 24px;
+  margin-bottom: 1rem;
+}
+.skeleton-line {
+  width: 100%;
+  height: 14px;
+  margin-bottom: 0.6rem;
+}
+.skeleton-line.short {
+  width: 55%;
+}
+.skeleton-meta {
+  width: 40%;
+  height: 16px;
+  margin-top: 1.2rem;
+}
+.skeleton-btn {
+  margin-top: 1rem;
+  width: 120px;
+  height: 32px;
+  border-radius: 6px;
+}
+.skeleton-btn.wide {
+  width: 160px;
+} 
+
+/* ---------- VISIBILITY BADGE ---------- */
+.visibility-badge {
+  position: absolute;
+  top: 16px;
+  right: 14px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: default;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* PUBLIC */
+.visibility-badge.public {
+  background: linear-gradient(135deg, #38a169, #2f855a);
+  color: white;
+}
+
+/* PRIVATE */
+.visibility-badge.private {
+  background: linear-gradient(135deg, #ed8936, #dd6b20);
+  color: white;
+}
+
+/* Hover animation */
+.visibility-badge:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Icon size */
+.visibility-badge i {
+  font-size: 0.75rem;
+}
+
+/* Modal Container */
+.delete-modal {
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  animation: scaleIn 0.3s ease;
+}
+
+/* Delete Icon */
+.delete-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: rgba(229,62,62,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-icon i {
+  font-size: 1.6rem;
+  color: #e53e3e;
+}
+
+/* Modal Title */
+.modal-title {
+  color: #2d3748;
+}
+
+/* Buttons */
+.modal-footer .btn-danger {
+  background: linear-gradient(135deg, #e53e3e, #c53030);
+  border: none;
+}
+
+.modal-footer .btn-danger:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 10px 25px rgba(229,62,62,0.35);
+  transform: translateY(-1px);
+}
+
+.modal-footer .btn-light:hover {
+  background-color: #f1f5f9;
+}
+
+/* Animation */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

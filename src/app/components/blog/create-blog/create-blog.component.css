@@ -1,0 +1,119 @@
+/* Main Layout */
+.create-blog-container {
+  min-height: calc(100vh - 70px); /* Prevent gap under navbar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+}
+
+.create-blog-wrapper {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1100px;
+  align-items: center;
+}
+
+/* Card */
+.create-blog-card {
+  background: white;
+  border-radius: 12px;
+  padding: 3rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.header h2 {
+  color: #2d3748;
+}
+
+/* Decoration Right Side */
+.decoration {
+  color: white;
+  animation: slideInRight 0.5s ease-out;
+}
+
+.decoration-content h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.05rem;
+}
+
+/* Animations */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+  border: 1px solid #e2e8f0 !important;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.2);
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 8px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-light:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .create-blog-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .decoration {
+    display: none;
+  }
+}
