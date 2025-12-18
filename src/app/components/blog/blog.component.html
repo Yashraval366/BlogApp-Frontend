@@ -29,7 +29,7 @@
 </div>
 
 <!-- SKELETON LOADER FOR ALL BLOGS -->
-<div class="masonry" *ngIf="blogResponse()?.status == 'loading'">
+<div class="masonry" *ngIf="blogResponse().status == 'loading'">
 
   <div class="masonry-item" *ngFor="let s of [1,1,1,1,1,1]">
     <div class="skeleton-card">
@@ -57,7 +57,7 @@
 </div>
 
 <!-- BLOG GRID -->
-<div class="container mt-4" *ngIf="blogResponse()?.status == 'success'">
+<div class="container mt-4" *ngIf="blogState().status == 'success'">
   <div class="masonry">
     @for(b of blogs(); track b.id)
     {
@@ -81,24 +81,12 @@
           </div>
 
           <!-- ACTION BAR -->
-          <div class="blog-actions">
-          
-            <button class="action-btn like-btn" aria-label="Like">
-              <i class="fa-regular fa-thumbs-up"></i>
-              <span>24</span>
-            </button>
-          
-            <button class="action-btn dislike-btn" aria-label="Dislike">
-              <i class="fa-regular fa-thumbs-down"></i>
-              <span>3</span>
-            </button>
-          
-            <button class="action-btn comment-btn ms-auto" aria-label="Comments">
-              <i class="fa-regular fa-comment-dots"></i>
-              <span>12</span>
-            </button>
-          
-          </div>
+           <app-reaction [likeCount]="b.likeCounts"
+              [dislikeCount]="b.dislikeCounts"
+              [userReaction]="b.userReaction"
+              (like)="like(b.id)"
+              (dislike)="dislike(b.id)">
+            </app-reaction>
       
           <a class="read-more-btn" routerLink="/blog-details/{{ b.id }}">
             Read More <i class="fa-solid fa-arrow-right ms-1"></i>
@@ -109,48 +97,5 @@
     }
   </div>
 </div>
-
-<!-- PAGINATION -->
-<!-- PAGINATION (wired to component functions) -->
-<nav class="pager container ml-5" aria-label="Blog pagination" *ngIf="totalPages() > 1">
-  <ul class="pager-list">
-
-    <!-- Prev -->
-    <li class="pager-item">
-      <button class="pager-link pager-prev" [attr.aria-disabled]="pageNumber() === 1"
-        [class.disabled]="pageNumber() === 1" (click)="prev()" title="Previous page" [disabled]="pageNumber() === 1">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-    </li>
-
-    <!-- If there are many pages, show first and left ellipsis when appropriate -->
-    <li class="pager-item" *ngIf="pages().length > 6">
-      <button class="pager-link" (click)="loadPage(1)">1</button>
-    </li>
-
-    <li class="pager-item pager-ellipsis" *ngIf="pages().length > 8 && pageNumber() > 4">…</li>
-
-    <!-- Page numbers around current page -->
-    <li class="pager-item" *ngFor="let p of paginationWindow(); trackBy: trackByNumber">
-      <button class="pager-link" [class.pager-active]="pageNumber() === p" (click)="loadPage(p)"
-        [attr.aria-current]="pageNumber() === p ? 'page' : null">
-        {{ p }}
-      </button>
-    </li>
-
-    <li class="pager-item pager-ellipsis" *ngIf="pages().length > 8 && pageNumber() < totalPages() - 3">…</li>
-
-    <li class="pager-item" *ngIf="pages().length > 6">
-      <button class="pager-link" (click)="loadPage(totalPages())">{{ totalPages() }}</button>
-    </li>
-
-    <!-- Next -->
-    <li class="pager-item">
-      <button class="pager-link pager-next" [attr.aria-disabled]="pageNumber() === totalPages()"
-        [class.disabled]="pageNumber() === totalPages()" (click)="next()" title="Next page"
-        [disabled]="pageNumber() === totalPages()">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </li>
-  </ul>
-</nav>
+<app-pagination [page]="pageNumber()" [totalPages]="totalPages()" (pageChange)="loadPage($event)">
+</app-pagination>

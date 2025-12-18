@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<div class="masonry" *ngIf="blogStatus()?.status == 'loading'">
+<div class="masonry" *ngIf="blogState().status == 'loading'">
 
     <div class="masonry-item" *ngFor="let s of [1,1,1,1,1,1]">
         <div class="skeleton-card">
@@ -66,7 +66,7 @@
 </div>
 
 <!-- BLOG LIST -->
-<div class="container mt-4" *ngIf="blogStatus()?.status == 'success'">
+<div class="container mt-4" *ngIf="blogState().status == 'success'">
 
     <div class="masonry">
 
@@ -94,7 +94,6 @@
                     </span>
                 }
 
-                
                 <!-- Title -->
                 <h4 class="myblog-title">{{ b.title }}</h4>
                 
@@ -109,42 +108,10 @@
                 </div>
                 
                 <!-- ACTION BAR -->
-                <div class="myblog-actions">
-                
-                    <!-- LEFT: Engagement stats (UI only) -->
-                    <div class="engagement">
-                
-                
-                
-                        <span class="eng-item like">
-                            <i class="fa-regular fa-thumbs-up"></i> 24
-                        </span>
-                
-                        <span class="eng-item comment">
-                            <i class="fa-regular fa-comment-dots"></i> 8
-                        </span>
-                
-                    </div>
-                
-                    <!-- RIGHT: Manage buttons -->
-                    <div class="manage-actions">
-                
-                        <a class="manage-btn edit-btn" routerLink="/edit-blog/{{ b.id }}">
-                            <i class="fa-solid fa-pen"></i>
-                            <span>Edit</span>
-                        </a>
-                
-                        <button class="manage-btn delete-btn" 
-                            data-bs-toggle="modal"
-                            data-bs-target="#confirmDeleteModal"
-                            (click)="openDeleteModal(b.id)"
-                        >
-                            <i class="fa-solid fa-trash"></i>
-                            <span>Delete</span>
-                        </button>
-                
-                    </div>
-                </div>
+                <app-reaction [likeCount]="b.likeCounts" [dislikeCount]="b.dislikeCounts" [userReaction]="b.userReaction"
+                    (like)="like(b.id)" (dislike)="dislike(b.id)">
+                </app-reaction>
+
             </div>
 
             <!-- CONFIRM DELETE MODAL -->
@@ -197,3 +164,6 @@
     </div>
 
 </div>
+
+<app-pagination [page]="pageNumber()" [totalPages]="totalPages()" (pageChange)="loadPage($event)">
+</app-pagination>

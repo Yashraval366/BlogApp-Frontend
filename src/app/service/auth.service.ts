@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,22 @@ import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 export class AuthService {
 
-  constructor() { }
+  constructor() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      this.userId.set(
+        Number(
+          decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']
+        )
+      );
+    }
+  }
 
   private http = inject(HttpClient)
   private router = inject(Router)
+
+  private userId = signal<number | null>(null);
 
   isLoggedIn = signal(this.HasToken());
 
@@ -44,6 +56,10 @@ export class AuthService {
     localStorage.clear();
     this.isLoggedIn.set(false);
     this.router.navigateByUrl('/login');
+  }
+
+  getUserId() {
+    return this.userId();
   }
 
 }

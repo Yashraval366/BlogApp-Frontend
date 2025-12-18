@@ -25,15 +25,22 @@ export class BlogService {
     );
   };
 
-  GetById(id: number): Observable<IBlog>{
-    return this.http.get<IBlog>(`http://localhost:5105/api/Blog/${id}`).pipe(
+  GetUserBlogs(userId: number, pageNumber = 1, pageSize = 10 ): Observable<IBlog[]>{
+
+     let params = new HttpParams()
+    .set('pageNumber', String(pageNumber))
+    .set('pageSize', String(pageSize))
+
+    console.log("api called")
+
+    return this.http.get<IBlog[]>(`http://localhost:5105/api/blog/userBlogs/${userId}`,{params}).pipe(
       map((res: any) => res.data)
     )
   }
 
-  GetUserBlogs(userId: number): Observable<IBlog[]>
+  GetById(id: number): Observable<IBlog>
   {
-    return this.http.get<IBlog[]>(`http://localhost:5105/userblogs/${userId}`).pipe(
+    return this.http.get<IBlog>(`http://localhost:5105/blog/${id}`).pipe(
       map((res: any) => res.data)
     )
   }

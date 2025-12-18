@@ -23,4 +23,14 @@ export interface IBlog {
   authorName: string
   createdAt: string
   lastUpdatedAt: any
+  likeCounts: number 
+  dislikeCounts: number
+  userReaction: ReactionType
+}
+
+
+export enum ReactionType {
+  Liked = 0,
+  Disliked = 1,
+  Null = 2
 }

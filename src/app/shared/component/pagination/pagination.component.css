@@ -1,0 +1,142 @@
+
+/* ---------- PAGINATION UI (modern) ---------- */
+.pager {
+  display: flex;
+  justify-content: center;   /* horizontally centers the entire pagination bar */
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.pager-list {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  list-style: none;
+  padding: 0.35rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(11, 15, 30, 0.04);
+  backdrop-filter: blur(6px);
+}
+
+/* Each item wrapper */
+/* .pager-item {
+
+} */
+
+/* Link base */
+.pager-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #2d3748; /* dark text */
+  transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms, opacity 200ms;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border: 1px solid rgba(45,55,72,0.06);
+  box-shadow: 0 4px 12px rgba(11, 15, 30, 0.04);
+}
+
+/* Hover micro-lift */
+.pager-link:hover:not(.disabled):not(.pager-active) {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(100, 80, 200, 0.08);
+}
+
+/* Active page — gradient bubble */
+.pager-active {
+  color: #fff;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  box-shadow: 0 12px 30px rgba(118,75,162,0.18), 0 6px 18px rgba(102,126,234,0.08);
+  transform: translateY(-3px);
+}
+
+/* Prev/Next icons smaller & subtle */
+.pager-prev, .pager-next {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+}
+
+/* Disabled state */
+.pager-link.disabled,
+.pager-link[aria-disabled="true"] {
+  opacity: 0.42;
+  cursor: default;
+  transform: none;
+  filter: grayscale(0.15);
+  box-shadow: none;
+}
+
+/* Ellipsis */
+.pager-ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 44px;
+  color: #94a3b8;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+/* Page number focus ring (keyboard accessible) */
+.pager-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(102,126,234,0.14), 0 8px 20px rgba(11,15,30,0.06);
+  z-index: 2;
+}
+
+/* Tiny chevron icon spacing */
+.pager-link i {
+  font-size: 0.9rem;
+}
+
+/* Compact / Mobile layout */
+@media (max-width: 576px) {
+  .pager-list {
+    gap: 0.35rem;
+    padding: 0.25rem;
+  }
+  .pager-link {
+    min-width: 36px;
+    height: 36px;
+    font-size: 0.88rem;
+    border-radius: 8px;
+  }
+  .pager-ellipsis {
+    min-width: 28px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Small animation: subtle shimmer on active to draw attention */
+.pager-active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.0) 30%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.0) 100%);
+  transform: translateX(-120%);
+  transition: transform 900ms cubic-bezier(.2,.9,.3,1);
+}
+
+.pager-link:hover.pager-active::after {
+  transform: translateX(20%);
+}
+
+/* Active shadow 'pop' on page change (can look nice even without JS) */
+.pager-active.pop {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(116, 84, 196, 0.18);
+}

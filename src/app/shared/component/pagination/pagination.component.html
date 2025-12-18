@@ -1,0 +1,45 @@
+<!-- PAGINATION -->
+<nav class="pager container" aria-label="Blog pagination" *ngIf="totalPages > 1">
+    <ul class="pager-list">
+
+        <!-- PREVIOUS -->
+        <li class="pager-item">
+            <button class="pager-link pager-prev" [disabled]="page === 1" [class.disabled]="page === 1" (click)="prev()"
+                title="Previous page">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+        </li>
+
+        <!-- FIRST PAGE -->
+        <li class="pager-item" *ngIf="pages().length > 6">
+            <button class="pager-link" (click)="goTo(1)">1</button>
+        </li>
+
+        <!-- LEFT ELLIPSIS -->
+        <li class="pager-item pager-ellipsis" *ngIf="pages().length > 8 && page > 4">
+            …
+        </li>
+
+        <!-- PAGE WINDOW -->
+        <li class="pager-item" *ngFor="let p of paginationWindow()">
+            <button class="pager-link" [class.pager-active]="page === p" (click)="goTo(p)"
+                [attr.aria-current]="page === p ? 'page' : null">
+                {{ p }}
+            </button>
+        </li>
+
+        <!-- RIGHT ELLIPSIS -->
+        <li class="pager-item pager-ellipsis" *ngIf="pages().length > 8 && page < totalPages - 3">
+            …
+        </li>
+
+        <!-- NEXT -->
+        <li class="pager-item">
+            <button class="pager-link pager-next" [disabled]="page === totalPages"
+                [class.disabled]="page === totalPages" (click)="next()" title="Next page">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </li>
+
+    </ul>
+</nav>

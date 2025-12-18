@@ -1,0 +1,26 @@
+<div class="blog-actions">
+
+    <button class="action-btn like-btn" aria-label="Like" [class.active]="userReaction === ReactionType.Liked"
+        (click)="like.emit()">
+        <i class="fa-thumbs-up" [ngClass]="{
+        'fa-solid': userReaction === ReactionType.Liked,
+        'fa-regular': userReaction !== ReactionType.Liked
+      }"></i>
+        <span>{{ likeCount }}</span>
+    </button>
+
+    <button class="action-btn dislike-btn" aria-label="Dislike" [class.active]="userReaction === ReactionType.Disliked"
+        (click)="dislike.emit()">
+        <i class="fa-thumbs-down" [ngClass]="{
+        'fa-solid': userReaction === ReactionType.Disliked,
+        'fa-regular': userReaction !== ReactionType.Disliked
+      }"></i>
+        <span>{{ dislikeCount }}</span>
+    </button>
+
+    <button class="action-btn comment-btn ms-auto" aria-label="Comments">
+        <i class="fa-regular fa-comment-dots"></i>
+        <span>12</span>
+    </button>
+
+</div>

@@ -1,114 +1,234 @@
-import { BehaviorSubject, filter, switchMap } from 'rxjs';
-import { Component, computed, inject, Signal, signal } from '@angular/core';
-import { BlogService } from '../../service/blog.service';
-import { CategoryStore } from '../../stores/category.store';
-import { IBlog } from '../../models/blog.model';
-import { map, single } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, finalize, switchMap } from 'rxjs';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal
+} from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from "@angular/router";
-import { Action } from 'rxjs/internal/scheduler/Action';
-import { LoadState, loadState } from '../../shared/state/load-state';
+import { RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+
+import { BlogService } from '../../service/blog.service';
+import { ReactionService } from '../../service/reaction.service';
+import { CategoryStore } from '../../stores/category.store';
+
+import { IBlog, ReactionType } from '../../models/blog.model';
 import { paginatedResult } from '../../models/paginatedResult.model';
+import { LoadState, loadState } from '../../shared/state/load-state';
+import { PaginationComponent } from '../../shared/component/pagination/pagination.component';
+import { ReactionComponent } from '../../shared/component/reaction/reaction.component';
 
 @Component({
   selector: 'app-blog',
-  imports: [DatePipe, CommonModule, RouterLink, CommonModule],
+  standalone: true,
+  imports: [CommonModule, DatePipe, RouterLink, PaginationComponent, ReactionComponent],
   templateUrl: './blog.component.html',
   styleUrls: ['./blog.component.css']
 })
 export class BlogComponent {
 
   private blogService = inject(BlogService);
+  private reactService = inject(ReactionService);
   store = inject(CategoryStore);
 
-  // keep signals for UI
+  ReactionType = ReactionType;
+
+  /* -------------------- MAIN STATE -------------------- */
+
+  blogState = signal<LoadState<paginatedResult<IBlog>>>({
+    status: 'loading'
+  });
+
   pageNumber = signal(1);
+
+  totalPages = computed(() => {
+    const s = this.blogState();
+    return s.status === 'success' ? s.data.totalPages : 0;
+  });
+
+  // 🚨 lock server sync during optimistic reaction
+  private reacting = signal(false);
+  private hasInitialLoad = signal(false);
+
+  /* -------------------- SERVER RESPONSE -------------------- */
   pageSize = signal(6);
 
-  // BehaviorSubject that drives requests; small shape to include page & size
-  private page$ = new BehaviorSubject<{ page: number; size: number }>({
+  private page$ = new BehaviorSubject({
     page: this.pageNumber(),
     size: this.pageSize()
   });
 
-  // Build a reactive observable that switches to the new GetAll() on page$ changes.
-  // loadState wraps loading/error/success and we pass that whole stream to toSignal
-  blogResponse = toSignal<LoadState<paginatedResult<IBlog>>>(
-    loadState(
-      this.page$.pipe(
-        // whenever page$ emits, call GetAll with current values
-        switchMap(({ page, size }) => this.blogService.GetAll(page, size))
-      ),
-      2000
-    ),
-    { initialValue: { status: 'loading' } as any }
-  );
-
-  // derived signals
-  blogs = computed(() => {
-    const s = this.blogResponse();
-    return s?.status === 'success' && Array.isArray(s.data.items) ? s.data.items : [];
-  });
-
-  totalCount = computed(() => {
-    const s = this.blogResponse();
-    return s?.status === 'success' && typeof s.data.totalCount === 'number' ? s.data.totalCount : 0;
-  });
-
-  totalPages = computed(() => {
-    const s = this.blogResponse();
-    return s?.status === 'success' && typeof s.data.totalPages === 'number' ? s.data.totalPages : 0;
-  });
-
-  pages = computed(() => Array.from({ length: this.totalPages() }, (_, i) => i + 1));
-
-  // paginationWindow (same as before)
-  paginationWindow = computed(() => {
-    const all = this.pages();
-    const current = this.pageNumber();
-    const total = all.length;
-    if (total <= 7) return all;
-    const windowSize = 5;
-    let start = Math.max(1, current - Math.floor(windowSize / 2));
-    let end = start + windowSize - 1;
-    if (end > total) {
-      end = total;
-      start = Math.max(1, end - windowSize + 1);
-    }
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  });
-
-  // --- Pagination handlers now update both the signal and page$ subject ---
   loadPage(page: number) {
     if (page === this.pageNumber()) return;
+
     this.pageNumber.set(page);
-    // push new page into page$ so the observable chain re-runs GetAll(...)
-    this.page$.next({ page, size: this.pageSize() });
+
+    this.page$.next({
+      page,
+      size: this.pageSize()
+    });
   }
 
-  next() {
-    if (this.pageNumber() < this.totalPages()) {
-      const nextPage = this.pageNumber() + 1;
-      this.pageNumber.set(nextPage);
-      this.page$.next({ page: nextPage, size: this.pageSize() });
+  blogResponse = toSignal(
+    loadState(
+      this.page$.pipe(
+        switchMap(({ page, size }) =>
+          this.blogService.GetAll(page, size)
+        )
+      )
+    ),
+    { initialValue: { status: 'loading' } as LoadState<paginatedResult<IBlog>> }
+  );
+
+  /* -------------------- SAFE SERVER SYNC -------------------- */
+
+  syncFromServer = effect(() => {
+    const res = this.blogResponse();
+
+    if (!res) return;
+
+    if (res.status === 'loading') {
+      if (!this.hasInitialLoad()) {
+        this.blogState.set({ status: 'loading' });
+      }
+      return;
     }
-  }
 
-  prev() {
-    if (this.pageNumber() > 1) {
-      const prevPage = this.pageNumber() - 1;
-      this.pageNumber.set(prevPage);
-      this.page$.next({ page: prevPage, size: this.pageSize() });
+    if (res.status === 'error') {
+      this.blogState.set(res);
+      return;
     }
+
+    if (res.status === 'success') {
+      // ⛔ DO NOT overwrite optimistic reactions
+      if (this.reacting()) return;
+
+      this.blogState.set(res);
+      this.hasInitialLoad.set(true);
+    }
+  }, { allowSignalWrites: true });
+
+  /* -------------------- DERIVED SIGNALS -------------------- */
+
+  blogs = computed(() => {
+   
+    const s = this.blogState();
+    return s.status === 'success' ? s.data.items : [];
+
+  });
+
+  /* -------------------- OPTIMISTIC REACTION -------------------- */
+
+  reactOptimistic(blogId: number, reaction: ReactionType)
+  {
+
+    const state = this.blogState();
+    if (state.status !== 'success') return;
+
+    const target = state.data.items.find(b => b.id === blogId);
+    if (!target) return;
+
+    const prevReaction = target.userReaction;
+    const prevLike = target.likeCounts;
+    const prevDislike = target.dislikeCounts;
+
+    const newReaction =
+      prevReaction === reaction ? ReactionType.Null : reaction;
+
+    let like = prevLike;
+    let dislike = prevDislike;
+
+    if (prevReaction === ReactionType.Liked) like--;
+    if (prevReaction === ReactionType.Disliked) dislike--;
+
+    if (newReaction === ReactionType.Liked) like++;
+    if (newReaction === ReactionType.Disliked) dislike++;
+
+    // ✅ OPTIMISTIC UPDATE (single source)
+    this.blogState.update(s => {
+      if (s.status !== 'success') return s;
+
+      return {
+        ...s,
+        data: {
+          ...s.data,
+          items: s.data.items.map(b =>
+            b.id === blogId
+              ? {
+                  ...b,
+                  userReaction: newReaction,
+                  likeCounts: like,
+                  dislikeCounts: dislike
+                }
+              : b
+          )
+        }
+      };
+    });
+
+    // ✅ SERVER CONFIRMATION
+    this.reactService.react(blogId, newReaction).subscribe({
+      next: (res: any) => {
+        this.blogState.update(s => {
+          if (s.status !== 'success') return s;
+
+          return {
+            ...s,
+            data: {
+              ...s.data,
+              items: s.data.items.map(b =>
+                b.id === blogId
+                  ? {
+                      ...b,
+                      likeCounts: res.data.like,
+                      dislikeCounts: res.data.dislike,
+                      userReaction: res.data.userReaction
+                    }
+                  : b
+              )
+            }
+          };
+        });
+      },
+      error: () => {
+        // rollback
+        this.blogState.update(s => {
+          if (s.status !== 'success') return s;
+
+          return {
+            ...s,
+            data: {
+              ...s.data,
+              items: s.data.items.map(b =>
+                b.id === blogId
+                  ? {
+                      ...b,
+                      userReaction: prevReaction,
+                      likeCounts: prevLike,
+                      dislikeCounts: prevDislike
+                    }
+                  : b
+              )
+            }
+          };
+        });
+      }
+    });
   }
 
-  // trackBy helpers
-  trackByBlog(_: number, b: IBlog) {
-    return b?.id;
-  }
-  trackByNumber(_: number, v: number) {
-    return v;
+  like(id: number) {
+    console.log('LIKE CLICKED', id);
+    this.reactOptimistic(id, ReactionType.Liked);
+    console.log("crrent blogs: ",this.blogs());
+    console.log("blogs final state: ", this.blogState())
   }
 
-} 
+  dislike(id: number) {
+    console.log('DISLIKE CLICKED', id);
+    console.log("crrent blogs: ",this.blogs());
+    this.reactOptimistic(id, ReactionType.Disliked);
+  }
+
+}
