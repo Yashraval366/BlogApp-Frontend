@@ -89,11 +89,9 @@
 }
 
 .action-btn.active.like-btn {
-  color: #38a169;
   transform: scale(1.1);
 }
 
 .action-btn.active.dislike-btn {
-  color: #e53e3e;
   transform: scale(1.1);
 }

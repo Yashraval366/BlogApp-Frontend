@@ -1,0 +1,181 @@
+/* COMMENTS SECTION */
+.comments-section {
+  animation: fadeUp 0.5s ease;
+}
+
+/* CARD */
+.comments-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+/* HEADER */
+.comments-header h4 {
+  color: #2d3748;
+}
+
+.sort-text {
+  font-size: 0.85rem;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+/* ADD COMMENT */
+.add-comment {
+  margin-top: 1.2rem;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.avatar.small {
+  width: 34px;
+  height: 34px;
+  font-size: 0.85rem;
+}
+
+/* INPUT */
+.comment-input {
+  border-radius: 10px;
+  resize: none;
+  font-size: 0.9rem;
+}
+
+.comment-input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.15rem rgba(102,126,234,0.2);
+}
+
+/* COMMENT LIST */
+.comment-list {
+  margin-top: 1.5rem;
+}
+
+.comment-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+  animation: slideInUp 0.4s ease;
+}
+
+/* REPLY INDENT */
+.comment-item.reply {
+  margin-left: 3rem;
+}
+
+/* BODY */
+.comment-body {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.username {
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.time {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* AUTHOR BADGE */
+.author-badge {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+/* TEXT */
+.comment-text {
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin: 0.4rem 0 0.6rem;
+}
+
+/* ACTIONS */
+.comment-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.action-btn {
+  border: none;
+  background: transparent;
+  font-size: 0.8rem;
+  color: #6b7280;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.action-btn:hover {
+  color: #667eea;
+  transform: translateY(-1px);
+}
+
+.action-btn.reply {
+  font-weight: 600;
+}
+
+/* BUTTONS */
+.btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102,126,234,0.25);
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 576px) {
+  .comment-item.reply {
+    margin-left: 1.5rem;
+  }
+}
+

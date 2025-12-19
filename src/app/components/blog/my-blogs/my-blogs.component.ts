@@ -15,7 +15,7 @@ import { AuthService } from '../../../service/auth.service';
 
 @Component({
   selector: 'app-my-blogs',
-  imports: [DatePipe, CommonModule, FormsModule, PaginationComponent, ReactionComponent],
+  imports: [DatePipe, CommonModule, FormsModule, PaginationComponent, ReactionComponent, RouterLink],
   templateUrl: './my-blogs.component.html',
   styleUrls: ['./my-blogs.component.css']
 })

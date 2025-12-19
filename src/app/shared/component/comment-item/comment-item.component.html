@@ -1,0 +1,50 @@
+<div class="comment-item" [class.reply]="comment.parentCommentId !== null">
+
+    <div class="avatar" [class.small]="comment.parentCommentId !== null">
+        <i class="fa-solid fa-user"></i>
+    </div>
+
+    <div class="comment-body">
+
+        <div class="comment-header">
+            @if(comment.userName == auth.getUserName()) {
+                <span class="username">You</span>
+            }
+            @else {
+                <span class="username">{{ comment.userName }}</span>
+            }
+            <span class="time">{{ comment.createdAt | date:'short' }}</span>
+        </div>
+
+        <p #contentEl class="comment-text" [class.collapsed]="!expanded && measured && isLong">
+          {{ comment.content }}
+        </p>
+
+        <div class="comment-actions">
+            <button class="action-btn" (click)="toggleReply()">Reply</button>
+            <button *ngIf="comment.replies.length" class="action-btn" (click)="toggleReplies()" [attr.aria-expanded]="repliesVisible">
+              {{ repliesVisible ? 'Hide replies' : ('Show replies (' + comment.replies.length + ')') }}
+            </button>
+        </div>
+
+        <button *ngIf="measured && isLong" class="read-toggle" (click)="toggleExpand()">
+          {{ expanded ? 'Read less' : 'Read more' }}
+        </button>
+
+        <!-- Reply box -->
+        <div class="reply-box" *ngIf="showReplyBox">
+            <textarea [(ngModel)]="replyText" placeholder="Reply…"></textarea>
+
+            <div class="reply-actions">
+                <button (click)="submitReply()">Reply</button>
+                <button (click)="cancel()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Recursive replies -->
+        <div class="replies" *ngIf="comment.replies.length && repliesVisible">
+            <app-comment-item *ngFor="let r of comment.replies" [comment]="r" (reply)="reply.emit($event)"></app-comment-item>
+        </div>
+
+    </div>
+</div>

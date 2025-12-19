@@ -108,9 +108,24 @@
                 </div>
                 
                 <!-- ACTION BAR -->
-                <app-reaction [likeCount]="b.likeCounts" [dislikeCount]="b.dislikeCounts" [userReaction]="b.userReaction"
+                <app-reaction [likeCount]="b.likeCounts" [dislikeCount]="b.dislikeCounts" [commentCount]="b.commentCounts" [userReaction]="b.userReaction"
                     (like)="like(b.id)" (dislike)="dislike(b.id)">
                 </app-reaction>
+
+                <div class="manage-actions d-flex justify-content-between mt-2">
+                
+                    <a class="manage-btn edit-btn" routerLink="/edit-blog/{{ b.id }}">
+                        <i class="fa-solid fa-pen"></i>
+                        <span>Edit</span>
+                    </a>
+                
+                    <button class="manage-btn delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
+                        (click)="openDeleteModal(b.id)">
+                        <i class="fa-solid fa-trash"></i>
+                        <span>Delete</span>
+                    </button>
+                
+                </div>
 
             </div>
 

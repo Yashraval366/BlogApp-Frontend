@@ -114,3 +114,81 @@
     padding: 1.5rem;
   }
 }
+
+/* ---------- BLOG REACTIONS ---------- */
+.blog-reactions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  animation: fadeUp 0.4s ease;
+}
+
+/* Base button */
+.reaction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: none;
+  background: #f7f8fc;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.reaction-btn i {
+  font-size: 0.95rem;
+  transition: transform 0.25s ease;
+}
+
+/* Like */
+.reaction-btn.like:hover {
+  background: rgba(56,161,105,0.12);
+  color: #2f855a;
+}
+
+.reaction-btn.like:hover i {
+  transform: scale(1.2) rotate(-6deg);
+}
+
+/* Dislike */
+.reaction-btn.dislike:hover {
+  background: rgba(229,62,62,0.12);
+  color: #c53030;
+}
+
+.reaction-btn.dislike:hover i {
+  transform: scale(1.2) rotate(6deg);
+}
+
+/* Comment */
+.reaction-btn.comment:hover {
+  background: rgba(102,126,234,0.12);
+  color: #4c51bf;
+}
+
+/* Divider */
+.reaction-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(0,0,0,0.1);
+  margin: 0 0.5rem;
+}
+
+/* Click feedback */
+.reaction-btn:active {
+  transform: scale(0.92);
+}
+
+@media (max-width: 576px) {
+  .blog-reactions {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+}

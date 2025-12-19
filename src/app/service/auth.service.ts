@@ -20,6 +20,9 @@ export class AuthService {
           decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']
         )
       );
+      this.userName.set(
+        decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname']
+      )
     }
   }
 
@@ -27,6 +30,9 @@ export class AuthService {
   private router = inject(Router)
 
   private userId = signal<number | null>(null);
+
+  private userName = signal<string | null>(null);
+
 
   isLoggedIn = signal(this.HasToken());
 
@@ -60,6 +66,10 @@ export class AuthService {
 
   getUserId() {
     return this.userId();
+  }
+
+  getUserName(){
+    return this.userName();
   }
 
 }

@@ -81,8 +81,10 @@
           </div>
 
           <!-- ACTION BAR -->
-           <app-reaction [likeCount]="b.likeCounts"
+           <app-reaction 
+              [likeCount]="b.likeCounts"
               [dislikeCount]="b.dislikeCounts"
+              [commentCount]="b.commentCounts"
               [userReaction]="b.userReaction"
               (like)="like(b.id)"
               (dislike)="dislike(b.id)">

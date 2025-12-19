@@ -1,0 +1,48 @@
+<!-- COMMENTS SECTION -->
+<section class="comments-section container mt-5">
+
+    <div class="comments-card shadow-lg">
+
+        <!-- HEADER -->
+        <div class="comments-header d-flex justify-content-between align-items-center">
+            <h4 class="fw-bold mb-0">
+                <i class="fa-regular fa-comments me-2"></i>
+                Comments (12)
+            </h4>
+
+            <span class="sort-text">
+                <i class="fa-solid fa-sort me-1"></i> Most Relevant
+            </span>
+        </div>
+
+        <hr />
+
+        <!-- ADD COMMENT -->
+        <div class="add-comment d-flex gap-3">
+
+            <div class="avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="flex-grow-1">
+                <textarea class="form-control comment-input" rows="3" [(ngModel)]="content" placeholder="Add a public comment..."></textarea>
+
+                <div class="d-flex justify-content-end gap-2 mt-2">
+                    <button class="btn btn-light btn-sm px-3">Cancel</button>
+                    <button class="btn btn-primary btn-sm px-4" (click)="onPost()">
+                        Comment
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COMMENT LIST -->
+        <div class="comment-list">
+            <app-comment-item *ngFor="let c of commentTree()" [comment]="c" (reply)="onNestedReply($event)"></app-comment-item>
+        </div>
+
+    </div>
+
+</section>
+

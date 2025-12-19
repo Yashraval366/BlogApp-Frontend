@@ -12,6 +12,7 @@ export class ReactionComponent {
 
   @Input({ required: true }) likeCount!: number;
   @Input({ required: true }) dislikeCount!: number;
+  @Input({required: true }) commentCount!: number;
   @Input({ required: true }) userReaction!: ReactionType;
 
   @Output() like = new EventEmitter<void>();

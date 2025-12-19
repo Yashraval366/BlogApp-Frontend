@@ -29,7 +29,6 @@
                 <i class="fa-solid fa-tag me-1"></i>
                 {{ blog()?.categoryName }}
             </span>
-
         </div>
     </div>
     }
@@ -38,21 +37,55 @@
 <!-- BLOG CONTENT -->
 <div class="container blog-details-container">
 
-    @if (blog())
-    {
+    @if (blog()) {
     <div class="blog-content-card shadow-lg">
 
         <!-- Body -->
         <div class="blog-body mt-4">
-
             <p class="blog-text">
                 {{ blog()?.description }}
             </p>
+        </div>
 
-            <hr />
+        <!-- 🔥 REACTION BAR -->
+        <div class="blog-reactions">
+
+            <button class="reaction-btn like" [class.active]="blog()!.userReaction === ReactionType.Liked"
+        (click)="like(blog()!.id)">
+                <i class="fa-regular fa-thumbs-up"
+                 [ngClass]="{
+                        'fa-solid': blog()!.userReaction === ReactionType.Liked,
+                        'fa-regular': blog()!.userReaction !== ReactionType.Liked
+                    }"
+                ></i>
+                <span>{{blog()!.likeCounts}}</span>
+            </button>
+
+            <button class="reaction-btn dislike" [class.active]="blog()!.userReaction === ReactionType.Disliked"
+        (click)="dislike(blog()!.id)">
+                <i class="fa-regular fa-thumbs-down"
+
+                [ngClass]="{
+                        'fa-solid': blog()!.userReaction === ReactionType.Disliked,
+                        'fa-regular': blog()!.userReaction !== ReactionType.Disliked
+                    }"
+                
+                ></i>
+                <span>{{blog()!.dislikeCounts}}</span>
+            </button>
+
+            <div class="reaction-divider"></div>
+
+            <button class="reaction-btn comment">
+                <i class="fa-regular fa-comment-dots"></i>
+                <span>{{blog()!.commentCounts}}</span>
+            </button>
 
         </div>
+
     </div>
     }
 
 </div>
+
+<app-comment [blogId]="blog()?.id!"></app-comment>

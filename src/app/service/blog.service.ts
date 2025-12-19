@@ -13,7 +13,6 @@ export class BlogService {
   constructor() { }
 
   private http = inject(HttpClient);
-  private router = inject(Router);
 
   GetAll(pageNumber = 1, pageSize = 10): Observable<paginatedResult<IBlog>>{
 
@@ -40,7 +39,7 @@ export class BlogService {
 
   GetById(id: number): Observable<IBlog>
   {
-    return this.http.get<IBlog>(`http://localhost:5105/blog/${id}`).pipe(
+    return this.http.get<IBlog>(`http://localhost:5105/api/blog/${id}`).pipe(
       map((res: any) => res.data)
     )
   }

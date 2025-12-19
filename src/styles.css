@@ -61,3 +61,137 @@ html, body {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+.comment-item {
+  display: flex;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+/* ---------- REPLIES CONTAINER ---------- */
+.replies {
+  margin-left: 3rem;
+  border-left: 2px solid #e5e7eb;
+  padding-left: 1rem;
+}
+
+/* ---------- REPLY BOX ---------- */
+.reply-box {
+  margin-left: 3.2rem;
+  margin-top: 0.6rem;
+  padding: 1rem 1.2rem;
+  background: #f8f9ff;
+  border-radius: 12px;
+  border: 1px solid rgba(102, 126, 234, 0.18);
+  animation: fadeUp 0.25s ease;
+  position: relative;
+}
+
+/* nesting indicator */
+.reply-box::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 18px;
+  width: 3px;
+  height: 65%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 999px;
+}
+
+/* textarea */
+.reply-box textarea {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+  font-size: 0.9rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.25s ease;
+}
+
+.reply-box textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.18rem rgba(102, 126, 234, 0.18);
+}
+
+/* actions */
+.reply-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.reply-box button {
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.9rem;
+  border: none;
+  transition: all 0.25s ease;
+}
+
+/* Post */
+.reply-box button:first-child {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.reply-box button:first-child:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.25);
+}
+
+/* Cancel */
+.reply-box button:last-child {
+  background: transparent;
+  color: #6b7280;
+}
+
+.reply-box button:last-child:hover {
+  background: rgba(0,0,0,0.05);
+  color: #2d3748;
+}
+
+/* ---------- NESTED REPLY CARD ---------- */
+.comment-item.reply {
+  margin-left: 3.2rem;
+  padding-left: 0.6rem;
+  border-left: 2px solid rgba(102, 126, 234, 0.15);
+}
+
+.comment-item.reply .comment-body {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+}
+
+/* avatar sizes */
+.avatar.small {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 576px) {
+  .reply-box,
+  .comment-item.reply {
+    margin-left: 2.2rem;
+  }
+}
+
+/* animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

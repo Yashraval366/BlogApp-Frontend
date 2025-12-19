@@ -25,6 +25,7 @@ export interface IBlog {
   lastUpdatedAt: any
   likeCounts: number 
   dislikeCounts: number
+  commentCounts: number
   userReaction: ReactionType
 }
 
